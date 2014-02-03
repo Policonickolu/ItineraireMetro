@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>ItineraireMetro</title>
+	</head>
+	<body>
+		
+		<input id="depart" list="stations">
+		<input id="arrive" list="stations">
+		
+		<datalist id="stations">
+
+		</datalist>
+
+		<input id="btn-calcul" type="submit"/>
+		<p id="itineraire"></p>
+		<script src="js/jquery-2.1.0.min.js"></script>
+		<script src="js/graph.js"></script>
+		<script src="js/metroparis.js"></script>
+		<script src="js/itineraire.js"></script>
+		<script>
+			for(var i in listeStations){
+				if($('#stations > option[value="' + listeStations[i].nom + '"]').length == 0){
+					$('#stations').append('<option value="'+ listeStations[i].nom + '">');
+				}
+			}
+
+			$('#btn-calcul').click(function calcul(){
+				var res = itineraire($('#depart').val(),$('#arrive').val());
+				var str = "";
+				for(var i = 0; i < res.length; i++){
+					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
+				}
+				$('#itineraire').html(str);
+			})			
+		</script>
+	</body>
+</html>
