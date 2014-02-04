@@ -8,4 +8,4 @@ A Paris subway map with pathfinder (line 1 to 14).
 ItineraireMetro includes:
 
 * [JQuery](http://jquery.com/)
-* [dijkstra](https://github.com/andrewhayward/dijkstra)
+* [Dijkstra](https://github.com/andrewhayward/dijkstra)
