@@ -5,6 +5,11 @@
 		<title>ItineraireMetro</title>
 	</head>
 	<body>
+		<div id="map">
+			<svg width="4600" height="4600">
+			
+			</svg>
+		</div>
 		
 		<input id="depart" list="stations">
 		<input id="arrive" list="stations">
@@ -20,6 +25,29 @@
 		<script src="js/metroparis.js"></script>
 		<script src="js/itineraire.js"></script>
 		<script>
+
+			str = "";
+			for(var i in listeLignes){
+				stations = listeLignes[i].stations;
+				for(var j in stations){
+					obj = stations[j];
+					str += obj.position[0] + "," + obj.position[1] + ",";
+				}
+				$('#map > svg').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
+				str = "";
+			}
+
+			for(var i in listeStations){
+				x = listeStations[i].position[0];
+				y = listeStations[i].position[1];
+				xt = listeStations[i].position[2];
+				yt = listeStations[i].position[3];
+				if($('#' + listeStations[i].identifiant.split("/")[0]).length == 0){
+					$('#map > svg').append('<circle id="' + listeStations[i].identifiant.split("/")[0] + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + listeStations[i].nom + '</text>');
+				}
+			}
+			$("#map").html($("#map").html());
+
 			for(var i in listeStations){
 				if($('#stations > option[value="' + listeStations[i].nom + '"]').length == 0){
 					$('#stations').append('<option value="'+ listeStations[i].nom + '">');
