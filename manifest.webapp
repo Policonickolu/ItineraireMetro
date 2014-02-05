@@ -1,0 +1,11 @@
+{
+    "version": "1.0.0",
+    "name": "MetroParis",
+    "description": "Paris metro with pathfinding",
+    "launch_path": "/index.html",
+    "developer": {
+    },
+    "installs_allowed_from": ["*"],
+    "icons": {
+    }
+}
