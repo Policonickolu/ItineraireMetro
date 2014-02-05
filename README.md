@@ -1,10 +1,11 @@
-ItineraireMetro
+MetroParis
 ===============
 
-A Paris subway pathfinder (line 1 to 14)
+A Paris subway map with pathfinder (line 1 to 14).
 
 ## Included code
 
 ItineraireMetro includes:
 
-* [dijkstra](https://github.com/andrewhayward/dijkstra)
+* [JQuery](http://jquery.com/)
+* [Dijkstra](https://github.com/andrewhayward/dijkstra)
