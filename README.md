@@ -9,3 +9,5 @@ ItineraireMetro includes:
 
 * [JQuery](http://jquery.com/)
 * [Dijkstra](https://github.com/andrewhayward/dijkstra)
+* [hammer.js](https://github.com/EightMedia/hammer.js)
+* [svg-pan-zoom](https://github.com/ariutta/svg-pan-zoom)
