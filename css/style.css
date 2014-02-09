@@ -1,0 +1,17 @@
+
+
+#menu {
+	position: fixed;
+	top:0;
+	left:0;
+}
+
+#map {
+	transform: translate3d(0,0,0);
+}
+
+#map #svg {
+	width: 4600px;
+	height: 4600px;
+	position: absolute;
+}

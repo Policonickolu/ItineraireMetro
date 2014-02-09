@@ -2,40 +2,64 @@
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<title>ItineraireMetro</title>
+
+			<!-- VIEWPORT POUR MOBILE -->
+		    <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=0" />
+		<title>MetroParis</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
 	</head>
 	<body>
-		<div id="map">
-			<svg width="4600" height="4600">
-			
+
+		<!-- LA CARTE -->
+		<div id="map" id="viewport">
+			<svg id="svg" viewBox="0 0 4600 4600">
+				<g>
+				<g>
 			</svg>
 		</div>
-		
-		<input id="depart" list="stations">
-		<input id="arrive" list="stations">
-		
-		<datalist id="stations">
 
-		</datalist>
+		<!-- LE MENU -->
+		<div id="menu">
+			<input id="depart" list="stations"><br>
+			<input id="arrive" list="stations"><br>
+			<input id="btn-calcul" type="submit"/>
+			<datalist id="stations">
 
-		<input id="btn-calcul" type="submit"/>
-		<p id="itineraire"></p>
-		<script src="js/jquery-2.1.0.min.js"></script>
-		<script src="js/graph.js"></script>
-		<script src="js/metroparis.js"></script>
-		<script src="js/itineraire.js"></script>
-		<script>
+			</datalist>
+			<p id="itineraire"></p>
+		</div>
+
+		<!-- LES SCRIPTS -->
+		<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="js/hammer.js"></script>
+		<script type="text/javascript" src="js/jquery.hammer.js"></script>
+		<script type="text/javascript" src="js/hammer.fakemultitouch.js"></script>
+		<script type="text/javascript" src="js/hammer.showtouches.js"></script>
+		<script type="text/javascript" src="js/gesture.js"></script>
+		<script type="text/javascript" src="js/graph.js"></script>
+		<script type="text/javascript" src="js/metroparis.js"></script>
+		<script type="text/javascript" src="js/itineraire.js"></script>		
+		<script type="text/javascript" src="js/svg-pan-zoom.js"></script>
+		<script type="text/javascript" >
+			
+
+			Hammer.plugins.fakeMultitouch();
+			Hammer.plugins.showTouches();
+
+			// PLACEMENT DES LIGNES
 
 			str = "";
 			for(var i in listeLignes){
 				stations = listeLignes[i].stations;
 				for(var j in stations){
 					obj = stations[j];
-					str += obj.position[0] + "," + obj.position[1] + ",";
+					str += (j==0?"":",") + obj.position[0] + "," + obj.position[1];
 				}
-				$('#map > svg').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
+				$('#map > svg > g').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
 				str = "";
 			}
+
+			// PLACEMENT DES STATIONS
 
 			for(var i in listeStations){
 				x = listeStations[i].position[0];
@@ -43,25 +67,47 @@
 				xt = listeStations[i].position[2];
 				yt = listeStations[i].position[3];
 				if($('#' + listeStations[i].identifiant.split("/")[0]).length == 0){
-					$('#map > svg').append('<circle id="' + listeStations[i].identifiant.split("/")[0] + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + listeStations[i].nom + '</text>');
+					$('#map > svg > g').append('<a><circle id="' + listeStations[i].identifiant.split("/")[0] + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /></a><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + listeStations[i].nom + '</text>');
 				}
 			}
+
+			// SCRIPT QUI LORSQU'ON CLIQUE SUR LES LIENS <a> CELA PERMET UNE INTERACTION 
+
+
+			//
+
+
+			// REFRESH AFFICHAGE
 			$("#map").html($("#map").html());
 
+			// LISTE DES STATIONS DU FORMULAIRE
 			for(var i in listeStations){
 				if($('#stations > option[value="' + listeStations[i].nom + '"]').length == 0){
 					$('#stations').append('<option value="'+ listeStations[i].nom + '">');
 				}
 			}
 
+			// BOUTON DE CALCUL D'ITINERAIRE
 			$('#btn-calcul').click(function calcul(){
 				var res = itineraire($('#depart').val(),$('#arrive').val());
 				var str = "";
 				for(var i = 0; i < res.length; i++){
-					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
+					str += "Prendre la ligne " + res[i][0].nom + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
 				}
 				$('#itineraire').html(str);
-			})			
+			})
+
+			// INITIALISATION DES EVENEMENTS DRAG/PAN/ZOOM
+
+			svgPanZoom.init({
+			  'selector': '#svg',
+			  'panEnabled': true, 
+			  'zoomEnabled': true,
+			  'dragEnabled': false,
+			  'zoomScaleSensitivity': 0.2,
+			  'minZoom': 0.2,
+			  'maxZoom': 10,
+			});
 		</script>
 	</body>
 </html>

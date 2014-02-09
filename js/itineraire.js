@@ -30,7 +30,6 @@ var itineraire = function(pointDepart, pointArrive){
 	
 	var graph = new Graph(carte);
 	var res = graph.findShortestPath(pointDepart, pointArrive);
-	
 	var tabs = [];
 	if(res != null && res.length > 1){
 		for(var i=0; i < res.length ;i++){
@@ -39,23 +38,23 @@ var itineraire = function(pointDepart, pointArrive){
 			tabs.push([obj.nom, obj.ligne, spl[1]]);
 		}
 
-		if(tabs[0][0] == tabs[1][0]) indiceDepart = 1;
+		if(tabs[0][0] == tabs[1][0]) tabs.shift();
 		
-		var depart = tabs[indiceDepart][0];
-		var ligneTexte = tabs[indiceDepart][1];
-		var ligne = tabs[indiceDepart][2];
-		var sens = direction(ligne, depart, tabs[indiceDepart+1][0]);
+		var depart = tabs[0][0];
+		var ligneTexte = tabs[0][1].nom;
+		var ligne = tabs[0][2];
+		var sens = direction(ligne, depart, tabs[1][0]).nom;
 		var etape = 0;
 
 		var resultat = [[ligneTexte,sens]];
 
 		//var str = "Prendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
 
-		for(var i=indiceDepart+1; i < tabs.length-1 ;i++){
+		for(var i=1; i < tabs.length-1 ;i++){
 			if(ligne != tabs[i][2]){
-				ligneTexte = tabs[i][1];
+				ligneTexte = tabs[i][1].nom;
 				ligne = tabs[i][2];
-				sens = direction(ligne, tabs[i][0], tabs[i+1][0]);
+				sens = direction(ligne, tabs[i][0], tabs[i+1][0]).nom;
 				resultat[etape].push(tabs[i-1][0]);
 				resultat.push([ligneTexte,sens]);
 				//str += tabs[i-1][0] + "\nPrendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
