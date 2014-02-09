@@ -92,7 +92,7 @@
 				var res = itineraire($('#depart').val(),$('#arrive').val());
 				var str = "";
 				for(var i = 0; i < res.length; i++){
-					str += "Prendre la ligne " + res[i][0].nom + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
+					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
 				}
 				$('#itineraire').html(str);
 			})

@@ -48,7 +48,7 @@ var itineraire = function(pointDepart, pointArrive){
 
 		var resultat = [[ligneTexte,sens]];
 
-		//var str = "Prendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
+		var str = "Prendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
 
 		for(var i=1; i < tabs.length-1 ;i++){
 			if(ligne != tabs[i][2]){
@@ -57,15 +57,15 @@ var itineraire = function(pointDepart, pointArrive){
 				sens = direction(ligne, tabs[i][0], tabs[i+1][0]).nom;
 				resultat[etape].push(tabs[i-1][0]);
 				resultat.push([ligneTexte,sens]);
-				//str += tabs[i-1][0] + "\nPrendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
+				str += tabs[i-1][0] + "\nPrendre la ligne " + ligneTexte + " vers " + sens + ", jusqu'à ";
 				etape++;
 			}
 		}
-		//str += tabs[tabs.length-1][0] + "\n";
+		str += tabs[tabs.length-1][0] + "\n";
 		resultat[resultat.length-1].push(tabs[tabs.length-1][0]);
 
-		//console.log(str);
-		//console.log(resultat + "");
+		console.log(str);
+		console.log(resultat + "");
 
 		return resultat;
 	}else{
