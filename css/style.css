@@ -7,8 +7,8 @@
 }
 
 #map {
-	transform: 'translate3d(0,0,0)';
-}
+/*	transform: matrix(0.5,0,0,0.5,-2000px,-2000px);
+*/}
 
 #map #svg {
 	width: 4600px;

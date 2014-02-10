@@ -14,7 +14,7 @@
 		<div id="map" id="viewport">
 			<svg id="svg" viewBox="0 0 4600 4600">
 				<g>
-				<g>
+				</g>
 			</svg>
 		</div>
 
@@ -23,6 +23,7 @@
 			<input id="depart" list="stations"><br>
 			<input id="arrive" list="stations"><br>
 			<input id="btn-calcul" type="submit"/>
+			<input id="btn-reset" type="reset"/>
 			<datalist id="stations">
 
 			</datalist>
@@ -40,7 +41,7 @@
 		<script type="text/javascript" src="js/metroparis.js"></script>
 		<script type="text/javascript" src="js/itineraire.js"></script>		
 		<script type="text/javascript" src="js/svg-pan-zoom.js"></script>
-		<script type="text/javascript" >
+		<script type="text/javascript">
 			
 
 			Hammer.plugins.fakeMultitouch();
@@ -62,12 +63,19 @@
 			// PLACEMENT DES STATIONS
 
 			for(var i in listeStations){
-				x = listeStations[i].position[0];
-				y = listeStations[i].position[1];
-				xt = listeStations[i].position[2];
-				yt = listeStations[i].position[3];
-				if($('#' + listeStations[i].identifiant.split("/")[0]).length == 0){
-					$('#map > svg > g').append('<a><circle id="' + listeStations[i].identifiant.split("/")[0] + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /></a><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + listeStations[i].nom + '</text>');
+				station = listeStations[i];
+				x = station.position[0];
+				y = station.position[1];
+				xt = station.position[2];
+				yt = station.position[3];
+				id = station.identifiant.split("/")[0];
+				$arg = $('#' + id);
+				$map = $('#map > svg > g');
+				if($arg.length == 0){
+					$map.append('<a><circle id="' + id + '" cx="' + x + '" cy="' + y + '" r=8 fill="' + station.ligne.couleur + '" /></a><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + station.nom + '</text>');
+				}else if($arg.attr('fill') != station.ligne.couleur){
+					$arg.remove();
+					$map.append('<a><circle id="' + id + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /></a>');
 				}
 			}
 
@@ -79,6 +87,7 @@
 
 			// REFRESH AFFICHAGE
 			$("#map").html($("#map").html());
+			zoomInit();
 
 			// LISTE DES STATIONS DU FORMULAIRE
 			for(var i in listeStations){
@@ -89,25 +98,60 @@
 
 			// BOUTON DE CALCUL D'ITINERAIRE
 			$('#btn-calcul').click(function calcul(){
-				var res = itineraire($('#depart').val(),$('#arrive').val());
+				var depart = $('#depart').val();
+				var arrive = $('#arrive').val()
+				
+				var reponse = itineraire(depart,arrive);
+				var res = reponse[0];
+				var trace = reponse[1];
+
 				var str = "";
+
+				var departObj = nomToObject(depart);
+				var str2 = departObj.position[0] + ", " + departObj.position[1];
 				for(var i = 0; i < res.length; i++){
-					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2] +".<br>";
+
+					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2].nom +".<br>";
+
 				}
 				$('#itineraire').html(str);
+
+				var str2 = "";
+				for(var i in trace){
+					obj = trace[i][0];
+					str2 += (i==0?"":",") + obj.position[0] + "," + obj.position[1];
+				}
+				trace = $("#trace");
+				if(trace.length>0) trace.remove();
+				$('#map > svg > g').append('<polyline id="trace" points="' + str2 + '" style="fill:none;stroke:black;stroke-width:5 ;stroke-dashoffset:20" />');
+				
+				$("#map").html($("#map").html());
+				zoomInit();
+			})
+
+			$('#btn-reset').click(function reset(){
+				$("#itineraire").html("");
+				trace = $("#trace");
+				if(trace.length>0) trace.remove();
+				
+				$("#map").html($("#map").html());
+				zoomInit();
 			})
 
 			// INITIALISATION DES EVENEMENTS DRAG/PAN/ZOOM
 
-			svgPanZoom.init({
-			  'selector': '#svg',
-			  'panEnabled': true, 
-			  'zoomEnabled': true,
-			  'dragEnabled': false,
-			  'zoomScaleSensitivity': 0.2,
-			  'minZoom': 0.2,
-			  'maxZoom': 10,
-			});
+			function zoomInit(){
+				svgPanZoom.init({
+				  'selector': '#svg',
+				  'panEnabled': true, 
+				  'zoomEnabled': true,
+				  'dragEnabled': false,
+				  'zoomScaleSensitivity': 0.2,
+				  'minZoom': 0.2,
+				  'maxZoom': 10,
+				});
+			}
+
 		</script>
 	</body>
 </html>

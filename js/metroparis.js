@@ -544,7 +544,7 @@ var p_iena = [1075*u,2465*u,20*u,20*u];
 var p_alma_marceau = [1270*u,2386*u,20*u,0*u];
 var p_saint_philippe_du_roule = [1553*u,2104*u,-160*u,-20*u];
 var p_miromesnil = [1635*u,2022*u,-100*u,0*u];
-var p_saint_augustin = [1706*u,1953*u,-120*u,0*u];
+var p_saint_augustin = [1686*u,1933*u,-120*u,0*u];
 var p_havre_caumartin = [1867*u,2016*u,20*u,-10*u];
 var p_saint_ambroise = [3260*u,2402*u,20*u,0*u];
 var p_voltaire = [3339*u,2482*u,20*u,0*u];
@@ -2175,8 +2175,8 @@ var direction = function(ligne, depart, suivant){
 		case "M13B" : lig = m13b.stations; break;
 		case "M14" : lig = m14.stations; break;
 	}
-	var dep = lig.indexOf(nomToObject(depart));
-	var sui = lig.indexOf(nomToObject(suivant));
+	var dep = lig.indexOf(depart);
+	var sui = lig.indexOf(suivant);
 	var res = dep - sui;
 	if(res < 0)
 		return lig[lig.length-1];
