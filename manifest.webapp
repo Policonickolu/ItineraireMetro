@@ -7,5 +7,7 @@
     },
     "installs_allowed_from": ["*"],
     "icons": {
+        "60": "/icon-60.png",
+        "128": "/icon-128.png"
     }
 }
