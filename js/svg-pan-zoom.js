@@ -120,17 +120,18 @@ svgPanZoom = function(){
    */
 
   function setupHandlers(svg){
-    setAttributes(svg, {
+    //setAttributes(svg, {
       /*'onmouseup': 'svgPanZoom.handleMouseUp(evt)',*/
       /*'onmousedown': 'svgPanZoom.handleMouseDown(evt)',*/
       /*'onmousemove': 'svgPanZoom.handleMouseMove(evt)',*/
       /*'onmouseleave' : 'svgPanZoom.handleMouseUp(evt)',*/ // Decomment this to stop the pan functionality when dragging out of the SVG element; Note that 'onmouseleave' works over parent svg and all children.
-    });
-
-    svg.setAttribute('xmlns', 'http://www.w3.org/1999/xlink')
-    svg.setAttributeNS('xmlns', 'xlink', 'http://www.w3.org/1999/xlink')
-    svg.setAttributeNS('xmlns', 'ev', 'http://www.w3.org/2001/xml-events')
-
+    //});
+    
+    if(!svg.getAttribute('xmlns')){
+      svg.setAttribute('xmlns', 'http://www.w3.org/1999/xlink');
+      svg.setAttributeNS('xmlns', 'xlink', 'http://www.w3.org/1999/xlink');
+      svg.setAttributeNS('xmlns', 'ev', 'http://www.w3.org/2001/xml-events');
+    }
     if(navigator.userAgent.toLowerCase().indexOf('webkit') >= 0) {
       svg.addEventListener('mousewheel', handleMouseWheel, false); // Chrome/Safari
     }
@@ -519,7 +520,7 @@ svgPanZoom = function(){
 
     var svg = (evt.target.tagName === 'svg' || evt.target.tagName === 'SVG') ? evt.target : evt.target.ownerSVGElement || evt.target.correspondingElement.ownerSVGElement;
 
-    var delta = 1/3;
+    var delta = -1/3;
     
     var z = Math.pow(1 + zoomScaleSensitivity, delta);
 
@@ -558,7 +559,7 @@ svgPanZoom = function(){
 
     var svg = (evt.target.tagName === 'svg' || evt.target.tagName === 'SVG') ? evt.target : evt.target.ownerSVGElement || evt.target.correspondingElement.ownerSVGElement;
 
-    var delta = -1/3;
+    var delta = 1/3;
     
     var z = Math.pow(1 + zoomScaleSensitivity, delta);
 
