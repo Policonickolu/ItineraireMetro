@@ -97,9 +97,10 @@
 			}
 
 			// BOUTON DE CALCUL D'ITINERAIRE
+
 			$('#btn-calcul').click(function calcul(){
 				var depart = $('#depart').val();
-				var arrive = $('#arrive').val()
+				var arrive = $('#arrive').val();
 				
 				var reponse = itineraire(depart,arrive);
 				var res = reponse[0];
@@ -129,7 +130,12 @@
 				zoomInit();
 			})
 
+
+			// BOUTON DE RESET DE L'ITINERAIRE
+
 			$('#btn-reset').click(function reset(){
+				$('#depart').val("");
+				$('#arrive').val("");
 				$("#itineraire").html("");
 				trace = $("#trace");
 				if(trace.length>0) trace.remove();
