@@ -1660,6 +1660,7 @@ var listeStations = [
 	saint_denis_universite_m13b,basilique_de_saint_denis_m13b,saint_denis_porte_de_paris_m13b,carrefour_pleyel_m13b,mairie_de_saint_ouen_m13b,garibaldi_m13b,porte_de_saint_ouen_m13b,guy_moquet_m13b,la_fourche_m13b,place_de_clichy_m13b,liege_m13b,saint_lazare_m13b,miromesnil_m13b,champs_elysees_clemenceau_m13b,invalides_m13b,varenne_m13b,saint_francois_xavier_m13b,duroc_m13b,montparnasse_bienvenue_m13b,gaite_m13b,pernety_m13b,plaisance_m13b,porte_de_vanves_m13b,malakoff_plateau_de_vanves_m13b,malakoff_rue_etienne_dolet_m13b,chatillon_montrouge_m13b,
 	saint_lazare_m14,madeleine_m14,pyramides_m14,chatelet_m14,gare_de_lyon_m14,bercy_m14,cour_saint_emilion_m14,bibliotheque_francois_mitterrand_m14,olympiades_m14
 ];
+listeStations.sort(function(a,b){return a.nom >= b.nom});
 
 // LISTE DES STATIONS PAR LIGNE
 
@@ -2180,8 +2181,10 @@ var direction = function(ligne, depart, suivant){
 	var res = dep - sui;
 	if(res < 0)
 		return lig[lig.length-1];
-	else
+	else if(res > 0)
 		return lig[0];
+	else
+		return depart;
 }
 
 
@@ -2210,4 +2213,27 @@ var stationToLigne = function(station){
 		}
 	}
 	return null;
+}
+
+var stringToObject = function(recherche){
+
+	for (i in listeStations){
+		if(simplifier(listeStations[i].nom.toLowerCase()).indexOf(simplifier(recherche.toLowerCase())) >= 0){
+			return listeStations[i];
+		}
+	}
+	return null;
+}
+
+var simplifier = function(nom){
+	str = nom;
+	str = str.replace(/[ç]/,"c");
+	str = str.replace(/[éèêë]/,"e");
+	str = str.replace(/[ô]/,"o");
+	str = str.replace(/[â]/,"a");
+	str = str.replace(/[ùü]/,"u");
+	str = str.replace(/[ïî]/,"i");
+	str = str.replace(/[-']/," ");
+	str = str.replace(/[ ]/,"");
+	return str;
 }

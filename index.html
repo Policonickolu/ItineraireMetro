@@ -4,48 +4,60 @@
 		<meta charset="utf-8">
 
 		<!-- VIEWPORT POUR MOBILE -->
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
 		<title>MetroParis</title>
+
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+
 	</head>
-	<body>
+	<body onload="setTimeout(loaded(),3000)">
 
 		<!-- LA CARTE -->
-		<div id="map" id="viewport">
-			<svg id="svg" viewBox="0 0 4600 4600">
-				<g>
-				</g>
-			</svg>
+		<div id="map" class="page">
+			<div id="scroller">
+				<svg id="svg" viewBox="0 0 4600 4600">
+					<g>
+					</g>
+				</svg>
+			</div>
 		</div>
 
 		<!-- LE MENU -->
-		<div id="menu">
-			<input id="depart" list="stations"><br>
-			<input id="arrive" list="stations"><br>
+		<div id="menu" class="sidebar">
+			<input id="depart"><br>
+			<select id="listeDepart" style="display:none;"><br>
+
+			<input id="arrive"><br>
+			<select id="listeArrive" style="display:none;"><br>
+
 			<input id="btn-calcul" type="submit"/>
 			<input id="btn-reset" type="reset"/>
+			
 			<datalist id="stations">
-
 			</datalist>
+			
 			<p id="itineraire"></p>
 		</div>
 
 		<!-- LES SCRIPTS -->
 		<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery.transit.js" ></script>
+
 		<script type="text/javascript" src="js/hammer.js"></script>
 		<script type="text/javascript" src="js/jquery.hammer.js"></script>
-		<script type="text/javascript" src="js/hammer.fakemultitouch.js"></script>
-		<script type="text/javascript" src="js/hammer.showtouches.js"></script>
-		<script type="text/javascript" src="js/gesture.js"></script>
+
+		<script type="text/javascript" src="js/iscroll-zoom.js"></script>
+
+		<script type="text/javascript" src="js/swipe-menu.js"></script>
+
 		<script type="text/javascript" src="js/graph.js"></script>
 		<script type="text/javascript" src="js/metroparis.js"></script>
 		<script type="text/javascript" src="js/itineraire.js"></script>		
-		<script type="text/javascript" src="js/svg-pan-zoom.js"></script>
 		<script type="text/javascript">
 			
-
-			Hammer.plugins.fakeMultitouch();
-			Hammer.plugins.showTouches();
+			
+			
 
 			// PLACEMENT DES LIGNES
 
@@ -56,7 +68,7 @@
 					obj = stations[j];
 					str += (j==0?"":",") + obj.position[0] + "," + obj.position[1];
 				}
-				$('#map > svg > g').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
+				$('#map > div > svg > g').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
 				str = "";
 			}
 
@@ -70,7 +82,7 @@
 				yt = station.position[3];
 				id = station.identifiant.split("/")[0];
 				$arg = $('#' + id);
-				$map = $('#map > svg > g');
+				$map = $('#map > div > svg > g');
 				if($arg.length == 0){
 					$map.append('<a><circle id="' + id + '" cx="' + x + '" cy="' + y + '" r=8 fill="' + station.ligne.couleur + '" /></a><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + station.nom + '</text>');
 				}else if($arg.attr('fill') != station.ligne.couleur){
@@ -82,12 +94,15 @@
 			// SCRIPT QUI LORSQU'ON CLIQUE SUR LES LIENS <a> CELA PERMET UNE INTERACTION 
 
 
+				// A FAIIIIIIIIIIIIIIIIIIIIIIIIRE
+
+
 			//
 
 
 			// REFRESH AFFICHAGE
 			$("#map").html($("#map").html());
-			zoomInit();
+
 
 			// LISTE DES STATIONS DU FORMULAIRE
 			for(var i in listeStations){
@@ -96,38 +111,88 @@
 				}
 			}
 
+			// SUGGESTION DES INPUTS
+			
+
+			function suggestion(cible, liste){
+				$liste = liste;
+				val = cible.val();
+
+				str = [];
+
+				console.log(val);
+
+				if(val.length > 0){
+					for(i in listeStations){
+						station = listeStations[i].nom.toLowerCase();
+						if(station.indexOf(val.toLowerCase()) >= 0 && str.indexOf('<option value="'+ listeStations[i].nom + '">' + listeStations[i].nom + '</option>') == -1){
+							str.push('<option value="'+ listeStations[i].nom + '">' + listeStations[i].nom + '</option>');
+						}
+					}
+				}				
+
+				if(str.length > 0){
+					$liste.empty();
+					for(i in str){
+						$liste.append(str[i]);
+					}
+					$liste.css('display', 'block');
+				}else{
+					$liste.empty();
+					$liste.css('display', 'none');
+				}
+				
+			}
+
+			function selection(cible, liste){
+				cible.val(liste.val());			
+			}
+
+			depart = $('#depart');
+			arrive = $('#arrive');
+			listeD = $('#listeDepart');
+			listeA = $('#listeArrive');
+			depart.keyup(function(){ suggestion(depart,listeD) });
+			arrive.keyup(function(){ suggestion(arrive,listeA) });
+			listeD.change(function(){ selection(depart,listeD) });
+			listeA.change(function(){ selection(arrive,listeA) });
+
+
 			// BOUTON DE CALCUL D'ITINERAIRE
 
 			$('#btn-calcul').click(function calcul(){
-				var depart = $('#depart').val();
-				var arrive = $('#arrive').val();
-				
+				var depart = $('#depart').val() + "";
+				var arrive = $('#arrive').val() + "";
+
 				var reponse = itineraire(depart,arrive);
-				var res = reponse[0];
-				var trace = reponse[1];
+				if(reponse.length > 0){
+					var res = reponse[0];
+					var trace = reponse[1];
 
-				var str = "";
+					var str = "";
 
-				var departObj = nomToObject(depart);
-				var str2 = departObj.position[0] + ", " + departObj.position[1];
-				for(var i = 0; i < res.length; i++){
+					var departObj = stringToObject(depart);
+					var str2 = departObj.position[0] + ", " + departObj.position[1];
 
-					str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2].nom +".<br>";
+					for(var i = 0; i < res.length; i++){
 
+						str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2].nom +".<br>";
+
+					}
+					$('#itineraire').html(str);
+
+					var str2 = "";
+					for(var i in trace){
+						obj = trace[i][0];
+						str2 += (i==0?"":",") + obj.position[0] + "," + obj.position[1];
+					}
+					trace = $("#trace");
+					if(trace.length>0) trace.remove();
+					$('#map > div > svg > g').append('<polyline id="trace" points="' + str2 + '" style="fill:none;stroke:black;stroke-width:5 ;stroke-dashoffset:20" />');
+					
+					$("#map").html($("#map").html());
+					loaded();
 				}
-				$('#itineraire').html(str);
-
-				var str2 = "";
-				for(var i in trace){
-					obj = trace[i][0];
-					str2 += (i==0?"":",") + obj.position[0] + "," + obj.position[1];
-				}
-				trace = $("#trace");
-				if(trace.length>0) trace.remove();
-				$('#map > svg > g').append('<polyline id="trace" points="' + str2 + '" style="fill:none;stroke:black;stroke-width:5 ;stroke-dashoffset:20" />');
-				
-				$("#map").html($("#map").html());
-				zoomInit();
 			})
 
 
@@ -141,22 +206,28 @@
 				if(trace.length>0) trace.remove();
 				
 				$("#map").html($("#map").html());
-				zoomInit();
+				loaded();
 			})
 
-			// INITIALISATION DES EVENEMENTS DRAG/PAN/ZOOM
+			// SCROLLING ET ZOOM
 
-			function zoomInit(){
-				svgPanZoom.init({
-				  'selector': '#svg',
-				  'panEnabled': true, 
-				  'zoomEnabled': true,
-				  'dragEnabled': false,
-				  'zoomScaleSensitivity': 0.2,
-				  'minZoom': 0.2,
-				  'maxZoom': 10,
+			function loaded() {
+			    new IScroll('#map',{
+				    freeScroll: true,
+				    scrollX: true,
+				    zoom: true,
+				    zoomMax: 10,
+				    zoomMin: 0.3,
+				    zoomStart: 0.5,
+				    useTransition: true,
+				    useTransform: true,
+					HWCompositing: true,
+					bounce: false,
 				});
 			}
+
+			document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+	
 
 		</script>
 	</body>
