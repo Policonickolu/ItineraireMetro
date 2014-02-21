@@ -2,16 +2,41 @@ body, html {
   height: 100%;
 }
 
+body > input {
+	width: 100%;
+}
+
 #menu {
 	width : 75%;
 	position: fixed;
 	top:0;
 	left:0;
 	bottom:0;
-	background-color: blue;
+	background-color: #DD4814;
 	-webkit-transform: translateX(-80%);
 	transform: translateX(-80%);
+
+	padding : 5% 5% 5% 5%;
 }
+
+#menu > div {
+	margin-right: 16%;
+	height: 100%;
+}
+
+.liste {
+	height : 200px;
+}
+
+#itineraire tbody {
+	background-color: white;
+}
+
+#itineraire thead {
+	background-color: #DD4814;
+	color: white;
+}
+
 
 #map {
 	position:relative;

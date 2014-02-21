@@ -9,6 +9,7 @@
 		<title>MetroParis</title>
 
 		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
 	</head>
 	<body onload="setTimeout(loaded(),3000)">
@@ -18,26 +19,38 @@
 			<div id="scroller">
 				<svg id="svg" viewBox="0 0 4600 4600">
 					<g>
+
 					</g>
 				</svg>
 			</div>
 		</div>
 
 		<!-- LE MENU -->
-		<div id="menu" class="sidebar">
-			<input id="depart"><br>
-			<select id="listeDepart" style="display:none;"><br>
+		<div id="menu">
+			<div class="well">
+				<legend>Itinéraire</legend>
+		        <input id="depart" class="form-control" placeholder="Départ"/><br>
+				<select id="listeDepart" class="form-control liste" style="display:none;"></select><br>
 
-			<input id="arrive"><br>
-			<select id="listeArrive" style="display:none;"><br>
+				<input id="arrive" class="form-control" placeholder="Destination"/><br>
+				<select id="listeArrive" class="form-control liste" style="display:none;"></select><br>
 
-			<input id="btn-calcul" type="submit"/>
-			<input id="btn-reset" type="reset"/>
-			
-			<datalist id="stations">
-			</datalist>
-			
-			<p id="itineraire"></p>
+				<input id="btn-calcul" class="btn btn-primary" type="submit"/>
+				<input id="btn-reset" class="btn btn-default" type="reset"/>
+
+				<datalist id="stations">
+				</datalist>
+
+				<br><br>
+				
+				
+
+				<table id="itineraire" class="table table-curved">
+				  
+				</table>
+
+		
+			</div>
 		</div>
 
 		<!-- LES SCRIPTS -->
@@ -53,11 +66,10 @@
 
 		<script type="text/javascript" src="js/graph.js"></script>
 		<script type="text/javascript" src="js/metroparis.js"></script>
-		<script type="text/javascript" src="js/itineraire.js"></script>		
+		<script type="text/javascript" src="js/itineraire.js"></script>
+
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>	
 		<script type="text/javascript">
-			
-			
-			
 
 			// PLACEMENT DES LIGNES
 
@@ -94,7 +106,17 @@
 			// SCRIPT QUI LORSQU'ON CLIQUE SUR LES LIENS <a> CELA PERMET UNE INTERACTION 
 
 
-				// A FAIIIIIIIIIIIIIIIIIIIIIIIIRE
+				$("#map > div > svg > g a").click(function(){
+					nom = $(this).children().first().attr('id');
+					obj = idToObject(nom);
+					dep = $("#depart").val();
+					console.log(obj.nom);
+					if(dep.length > 0){
+						$("#arrive").val(obj.nom);
+					}else{
+						$("#depart").val(obj.nom);
+					}
+				})
 
 
 			//
@@ -120,9 +142,8 @@
 
 				str = [];
 
-				console.log(val);
-
 				if(val.length > 0){
+					
 					for(i in listeStations){
 						station = listeStations[i].nom.toLowerCase();
 						if(station.indexOf(val.toLowerCase()) >= 0 && str.indexOf('<option value="'+ listeStations[i].nom + '">' + listeStations[i].nom + '</option>') == -1){
@@ -144,8 +165,9 @@
 				
 			}
 
-			function selection(cible, liste){
-				cible.val(liste.val());			
+			function selection(source, cible, liste){
+				cible.val(liste.val());
+				source.css('display', 'none');
 			}
 
 			depart = $('#depart');
@@ -154,8 +176,8 @@
 			listeA = $('#listeArrive');
 			depart.keyup(function(){ suggestion(depart,listeD) });
 			arrive.keyup(function(){ suggestion(arrive,listeA) });
-			listeD.change(function(){ selection(depart,listeD) });
-			listeA.change(function(){ selection(arrive,listeA) });
+			listeD.change(function(){ selection(listeD, depart,listeD)});
+			listeA.change(function(){ selection(listeA, arrive,listeA) });
 
 
 			// BOUTON DE CALCUL D'ITINERAIRE
@@ -169,17 +191,21 @@
 					var res = reponse[0];
 					var trace = reponse[1];
 
-					var str = "";
+					var str = "<thead><tr><th>Itinéraire</th></tr></thead><tbody>";
 
 					var departObj = stringToObject(depart);
+					var arriveObj = stringToObject(arrive);
 					var str2 = departObj.position[0] + ", " + departObj.position[1];
 
 					for(var i = 0; i < res.length; i++){
 
-						str += "Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2].nom +".<br>";
+						str += "<tr><td>Prendre la ligne " + res[i][0] + (res[i][1]!=res[i][2] ? " vers " + res[i][1] + ",":"") + " jusqu'à " + res[i][2].nom +".</td></tr></tbody>";
 
 					}
+					str += "</ul>";
 					$('#itineraire').html(str);
+					$('#depart').val(departObj.nom);
+					$('#arrive').val(arriveObj.nom);
 
 					var str2 = "";
 					for(var i in trace){
@@ -204,7 +230,8 @@
 				$("#itineraire").html("");
 				trace = $("#trace");
 				if(trace.length>0) trace.remove();
-				
+				$('#listeDepart').css('display', 'none');
+				$('#listeArrive').css('display', 'none');
 				$("#map").html($("#map").html());
 				loaded();
 			})
