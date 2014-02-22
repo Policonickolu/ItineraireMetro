@@ -1,10 +1,15 @@
 
 var itineraire = function(pDepart, pArrive){
 
+	if(pDepart == "" || pDepart == ""){
+		return [];
+	}
 
 
 	var pointDepart = stringToObject(pDepart).identifiant;
 	var pointArrive = stringToObject(pArrive).identifiant;
+
+
 
 	var carte = planMetro()();
 

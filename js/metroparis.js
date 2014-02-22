@@ -1399,17 +1399,17 @@ louis_blanc_m7bisa.voisins = {"jaures/M7bisA":DIR, /* Corresp ---> */ "louis_bla
 jaures_m7bisa.voisins = {"louis_blanc/M7bisA":DIR, "bolivar/M7bisA":DIR, /* Corresp ---> */ "jaures/M2":COR, "jaures/M5":COR };
 bolivar_m7bisa.voisins = {"jaures/M7bisA":DIR, "buttes_chaumont/M7bisA":DIR, /* Corresp ---> */  };
 buttes_chaumont_m7bisa.voisins = {"bolivar/M7bisA":DIR, "botzaris/M7bisA":DIR, /* Corresp ---> */  };
-botzaris_m7bisa.voisins = {"buttes_chaumont/M7bisA":DIR, "place_des_fetes/M7bisA":DIR, /* Corresp ---> */  };
-place_des_fetes_m7bisa.voisins = {"botzaris/M7bisA":DIR, "pre_saint_gervais/M7bisA":DIR, /* Corresp ---> */ "place_des_fetes/M11":COR };
-pre_saint_gervais_m7bisa.voisins = {"place_des_fetes/M7bisA":DIR, /* Corresp ---> */  };
+botzaris_m7bisa.voisins = {"buttes_chaumont/M7bisA":DIR, "place_des_fetes/M7bisA":DIR, /* Corresp ---> */ "botzaris/M7bisB":COR };
+place_des_fetes_m7bisa.voisins = {"pre_saint_gervais/M7bisA":DIR, /* Corresp ---> */ "place_des_fetes/M11":COR };
+pre_saint_gervais_m7bisa.voisins = { /* Corresp ---> */ "pre_saint_gervais/M7bisB":COR };
 
 louis_blanc_m7bisb.voisins = {"jaures/M7bisB":DIR, /* Corresp ---> */ "louis_blanc/M7A":COR, "louis_blanc/M7B":COR };
 jaures_m7bisb.voisins = {"louis_blanc/M7bisB":DIR, "bolivar/M7bisB":DIR, /* Corresp ---> */ "jaures/M2":COR, "jaures/M5":COR };
 bolivar_m7bisb.voisins = {"jaures/M7bisB":DIR, "buttes_chaumont/M7bisB":DIR, /* Corresp ---> */  };
 buttes_chaumont_m7bisb.voisins = {"bolivar/M7bisB":DIR, "botzaris/M7bisB":DIR, /* Corresp ---> */  };
-botzaris_m7bisb.voisins = {"buttes_chaumont/M7bisB":DIR, "danube/M7bisB":DIR, /* Corresp ---> */  };
-danube_m7bisb.voisins = {"botzaris/M7bisB":DIR, "pre_saint_gervais/M7bisB":DIR, /* Corresp ---> */  };
-pre_saint_gervais_m7bisb.voisins = {"danube/M7bisB":DIR, /* Corresp ---> */  };
+botzaris_m7bisb.voisins = {"buttes_chaumont/M7bisB":DIR, /* Corresp ---> */ "botzaris/M7bisA":COR };
+danube_m7bisb.voisins = {"botzaris/M7bisB":DIR, /* Corresp ---> */  };
+pre_saint_gervais_m7bisb.voisins = {"danube/M7bisB":DIR, /* Corresp ---> */ "pre_saint_gervais/M7bisA":COR };
 
 balard_m8.voisins = {"lourmel/M8":DIR, /* Corresp ---> */  };
 lourmel_m8.voisins = {"balard/M8":DIR, "boucicaut/M8":DIR, /* Corresp ---> */  };
@@ -1489,11 +1489,11 @@ croix_de_chavaux_m9.voisins = {"robespierre/M9":DIR, "mairie_de_montreuil/M9":DI
 mairie_de_montreuil_m9.voisins = {"croix_de_chavaux/M9":DIR, /* Corresp ---> */  };
 
 boulogne_pont_de_saint_cloud_m10a.voisins = {"boulogne_jean_jaures/M10A":DIR, /* Corresp ---> */  };
-boulogne_jean_jaures_m10a.voisins = {"boulogne_pont_de_saint_cloud/M10A":DIR, "michel_ange_molitor/M10A":DIR, /* Corresp ---> */  };
-michel_ange_molitor_m10a.voisins = {"boulogne_jean_jaures/M10A":DIR, "chardon_lagache/M10A":DIR, /* Corresp ---> */ "michel_ange_molitor/M9":COR };
-chardon_lagache_m10a.voisins = {"michel_ange_molitor/M10A":DIR, "mirabeau/M10A":DIR, /* Corresp ---> */  };
-mirabeau_m10a.voisins = {"chardon_lagache/M10A":DIR, "javel_andre_citroen/M10A":DIR, /* Corresp ---> */  };
-javel_andre_citroen_m10a.voisins = {"mirabeau/M10A":DIR, "charles_michels/M10A":DIR, /* Corresp ---> */  };
+boulogne_jean_jaures_m10a.voisins = {"boulogne_pont_de_saint_cloud/M10A":DIR, "michel_ange_molitor/M10A":DIR, /* Corresp ---> */ "boulogne_jean_jaures/M10B":COR };
+michel_ange_molitor_m10a.voisins = {"chardon_lagache/M10A":DIR, /* Corresp ---> */ "michel_ange_molitor/M9":COR };
+chardon_lagache_m10a.voisins = {"mirabeau/M10A":DIR, /* Corresp ---> */  };
+mirabeau_m10a.voisins = {"javel_andre_citroen/M10A":DIR, /* Corresp ---> */  };
+javel_andre_citroen_m10a.voisins = {"charles_michels/M10A":DIR, /* Corresp ---> */ "javel_andre_citroen/M10B":COR };
 charles_michels_m10a.voisins = {"javel_andre_citroen/M10A":DIR, "avenue_emile_zola/M10A":DIR, /* Corresp ---> */  };
 avenue_emile_zola_m10a.voisins = {"charles_michels/M10A":DIR, "la_motte_picquet_grenelle/M10A":DIR, /* Corresp ---> */  };
 la_motte_picquet_grenelle_m10a.voisins = {"avenue_emile_zola/M10A":DIR, "segur/M10A":DIR, /* Corresp ---> */ "la_motte_picquet_grenelle/M6":COR, "la_motte_picquet_grenelle/M8":COR };
@@ -1510,11 +1510,11 @@ jussieu_m10a.voisins = {"cardinal_lemoine/M10A":DIR, "gare_d_austerlitz/M10A":DI
 gare_d_austerlitz_m10a.voisins = {"jussieu/M10A":DIR, /* Corresp ---> */ "gare_d_austerlitz/M5":COR };
 
 boulogne_pont_de_saint_cloud_m10b.voisins = {"boulogne_jean_jaures/M10B":DIR, /* Corresp ---> */  };
-boulogne_jean_jaures_m10b.voisins = {"boulogne_pont_de_saint_cloud/M10B":DIR, "porte_d_auteuil/M10B":DIR, /* Corresp ---> */  };
-porte_d_auteuil_m10b.voisins = {"boulogne_jean_jaures/M10B":DIR, "michel_ange_auteuil/M10B":DIR, /* Corresp ---> */  };
-michel_ange_auteuil_m10b.voisins = {"porte_d_auteuil/M10B":DIR, "eglise_d_auteuil/M10B":DIR, /* Corresp ---> */ "michel_ange_auteuil/M9":COR };
-eglise_d_auteuil_m10b.voisins = {"michel_ange_auteuil/M10B":DIR, "javel_andre_citroen/M10B":DIR, /* Corresp ---> */  };
-javel_andre_citroen_m10b.voisins = {"eglise_d_auteuil/M10B":DIR, "charles_michels/M10B":DIR, /* Corresp ---> */  };
+boulogne_jean_jaures_m10b.voisins = {"boulogne_pont_de_saint_cloud/M10B":DIR, /* Corresp ---> */ "boulogne_jean_jaures/M10A":COR };
+porte_d_auteuil_m10b.voisins = {"boulogne_jean_jaures/M10B":DIR, /* Corresp ---> */  };
+michel_ange_auteuil_m10b.voisins = {"porte_d_auteuil/M10B":DIR, /* Corresp ---> */ "michel_ange_auteuil/M9":COR };
+eglise_d_auteuil_m10b.voisins = {"michel_ange_auteuil/M10B":DIR, /* Corresp ---> */  };
+javel_andre_citroen_m10b.voisins = {"eglise_d_auteuil/M10B":DIR, "charles_michels/M10B":DIR, /* Corresp ---> */ "javel_andre_citroen/M10A":COR };
 charles_michels_m10b.voisins = {"javel_andre_citroen/M10B":DIR, "avenue_emile_zola/M10B":DIR, /* Corresp ---> */  };
 avenue_emile_zola_m10b.voisins = {"charles_michels/M10B":DIR, "la_motte_picquet_grenelle/M10B":DIR, /* Corresp ---> */  };
 la_motte_picquet_grenelle_m10b.voisins = {"avenue_emile_zola/M10B":DIR, "segur/M10B":DIR, /* Corresp ---> */ "la_motte_picquet_grenelle/M6":COR, "la_motte_picquet_grenelle/M8":COR };
@@ -2214,6 +2214,12 @@ var stationToLigne = function(station){
 }
 
 var stringToObject = function(recherche){
+
+	var stations = rechercheStations(recherche);
+	return (stations.length > 0 ? stations[0] : null);
+}
+
+var rechercheStations = function(recherche){
 	stations = []
 	for (i in listeStations){
 		index = simplifier(listeStations[i].nom.toLowerCase()).indexOf(simplifier(recherche.toLowerCase()));
@@ -2222,7 +2228,12 @@ var stringToObject = function(recherche){
 		}
 	}
 	stations.sort(function(a,b){return (a[0] != b[0] ? a[0] >= b[0] : a[1].nom >= b[1].nom)});
-	return (stations.length > 0 ? stations[0][1] : null);
+	
+	sta = []
+	for(i in stations){
+		sta.push(stations[i][1]);
+	}
+	return sta;	
 }
 
 var simplifier = function(nom){

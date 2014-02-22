@@ -17,26 +17,42 @@
 		<!-- LA CARTE -->
 		<div id="map" class="page">
 			<div id="scroller">
-				<svg id="svg" viewBox="0 0 4600 4600">
-					<g>
-
-					</g>
-				</svg>
+				<div>
+					<svg id="svg" viewBox="0 0 4600 4600">
+						<g>
+						</g>
+					</svg>
+				</div>
 			</div>
+			
+		</div>
+
+		<div style="display: none">
+		    <svg viewBox="0 0 1000 1000" version="1.1">
+		       <defs>
+		           <g id="circleblanc">
+		               <circle cx="0" cy="0" stroke="black" stroke-width="1" fill="white" />
+		           </g>
+		           <g id="circlecouleur">
+		               <circle cx="0" cy="0" />
+		           </g>
+		       </defs>
+		  </svg>
 		</div>
 
 		<!-- LE MENU -->
 		<div id="menu">
+			<div>
 			<div class="well">
 				<legend>Itinéraire</legend>
 		        <input id="depart" class="form-control" placeholder="Départ"/><br>
-				<select id="listeDepart" class="form-control liste" style="display:none;"></select><br>
+				<select id="listeDepart" class="form-control" style="display:none;"></select><br>
 
 				<input id="arrive" class="form-control" placeholder="Destination"/><br>
-				<select id="listeArrive" class="form-control liste" style="display:none;"></select><br>
+				<select id="listeArrive" class="form-control" style="display:none;"></select><br>
 
-				<input id="btn-calcul" class="btn btn-primary" type="submit"/>
-				<input id="btn-reset" class="btn btn-default" type="reset"/>
+				<input id="btn-calcul" class="btn btn-primary" type="submit" value="Calculer"/>
+				<input id="btn-reset" class="btn btn-default" type="reset" value="Annuler"/>
 
 				<datalist id="stations">
 				</datalist>
@@ -49,7 +65,7 @@
 				  
 				</table>
 
-		
+			</div>
 			</div>
 		</div>
 
@@ -80,7 +96,7 @@
 					obj = stations[j];
 					str += (j==0?"":",") + obj.position[0] + "," + obj.position[1];
 				}
-				$('#map > div > svg > g').append('<polyline points="' + str + '" style="fill:none;stroke:' + listeLignes[i].couleur + ';stroke-width:10;stroke-opacity:0.5;stroke-dasharray: 10 5 5 10; stroke-dashoffset:20" />');
+				$('#svg > g').append('<polyline class="ligne" points="' + str + '" style="stroke:' + listeLignes[i].couleur + ';" />');
 				str = "";
 			}
 
@@ -94,19 +110,19 @@
 				yt = station.position[3];
 				id = station.identifiant.split("/")[0];
 				$arg = $('#' + id);
-				$map = $('#map > div > svg > g');
+				$map = $('#svg > g');
 				if($arg.length == 0){
-					$map.append('<a><circle id="' + id + '" cx="' + x + '" cy="' + y + '" r=8 fill="' + station.ligne.couleur + '" /></a><text x="' + (x + xt) + '" y="' + (y + yt) +'" fill="black" font-family="arial">' + station.nom + '</text>');
+					$map.append('<circle id="' + id + '" cx="' + x + '" cy="' + y + '" r="8" fill="' + station.ligne.couleur + '" /><text x="' + (x + xt) + '" y="' + (y + yt) +'" >' + station.nom + '</text>');
 				}else if($arg.attr('fill') != station.ligne.couleur){
 					$arg.remove();
-					$map.append('<a><circle id="' + id + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" /></a>');
+					$map.append('<circle id="' + id + '" cx="' + x + '" cy="' + y + '" r="10" stroke="black" stroke-width="1" fill="white" />');
 				}
 			}
 
 			// SCRIPT QUI LORSQU'ON CLIQUE SUR LES LIENS <a> CELA PERMET UNE INTERACTION 
 
 
-				$("#map > div > svg > g a").click(function(){
+				$("#svg > g a").click(function(){
 					nom = $(this).children().first().attr('id');
 					obj = idToObject(nom);
 					dep = $("#depart").val();
@@ -140,14 +156,16 @@
 				$liste = liste;
 				val = cible.val();
 
-				str = [];
-
+				var str = [];
 				if(val.length > 0){
-					
-					for(i in listeStations){
-						station = listeStations[i].nom.toLowerCase();
-						if(station.indexOf(val.toLowerCase()) >= 0 && str.indexOf('<option value="'+ listeStations[i].nom + '">' + listeStations[i].nom + '</option>') == -1){
-							str.push('<option value="'+ listeStations[i].nom + '">' + listeStations[i].nom + '</option>');
+					var stations = rechercheStations(val);
+
+					for(i in stations){
+						station = stations[i].nom.toLowerCase();
+						if(str.indexOf('<option value="'+ stations[i].nom + '">' + stations[i].nom + '</option>') == -1){
+
+							str.push('<option value="'+ stations[i].nom + '">' + stations[i].nom + '</option>');
+
 						}
 					}
 				}				
@@ -162,22 +180,26 @@
 					$liste.empty();
 					$liste.css('display', 'none');
 				}
+				setTimeout(function () {
+				        mapscroll.refresh();
+				        menuscroll.refresh();
+				}, 0);
 				
 			}
 
-			function selection(source, cible, liste){
+			function selection(cible, liste){
 				cible.val(liste.val());
-				source.css('display', 'none');
+				liste.css('display', 'none');
 			}
 
 			depart = $('#depart');
 			arrive = $('#arrive');
 			listeD = $('#listeDepart');
 			listeA = $('#listeArrive');
-			depart.keyup(function(){ suggestion(depart,listeD) });
-			arrive.keyup(function(){ suggestion(arrive,listeA) });
-			listeD.change(function(){ selection(listeD, depart,listeD)});
-			listeA.change(function(){ selection(listeA, arrive,listeA) });
+			depart.keyup(function(){ suggestion($(this),listeD) });
+			arrive.keyup(function(){ suggestion($(this),listeA) });
+			listeD.change(function(){ selection(depart,$(this))});
+			listeA.change(function(){ selection(arrive,$(this)) });
 
 
 			// BOUTON DE CALCUL D'ITINERAIRE
@@ -214,10 +236,15 @@
 					}
 					trace = $("#trace");
 					if(trace.length>0) trace.remove();
-					$('#map > div > svg > g').append('<polyline id="trace" points="' + str2 + '" style="fill:none;stroke:black;stroke-width:5 ;stroke-dashoffset:20" />');
+					$('#svg > g').append('<polyline id="trace" points="' + str2 + '" style="fill:none;stroke:black;stroke-width:5 ;stroke-dashoffset:20;" />');
 					
 					$("#map").html($("#map").html());
 					loaded();
+					setTimeout(function () {
+				        mapscroll.refresh();
+				        menuscroll.refresh();
+				    }, 0);
+					mapscroll.scrollTo(departObj.position[0], departObj.position[1]);
 				}
 			})
 
@@ -234,12 +261,18 @@
 				$('#listeArrive').css('display', 'none');
 				$("#map").html($("#map").html());
 				loaded();
+				setTimeout(function () {
+				        mapscroll.refresh();
+				        menuscroll.refresh();
+				}, 0);
 			})
 
 			// SCROLLING ET ZOOM
 
+			var mapscroll;
+			var menuscroll;
 			function loaded() {
-			    new IScroll('#map',{
+			    mapscroll = new IScroll('#map',{
 				    freeScroll: true,
 				    scrollX: true,
 				    zoom: true,
@@ -251,7 +284,9 @@
 					HWCompositing: true,
 					bounce: false,
 				});
+				
 			}
+			menuscroll = new IScroll('#menu');
 
 			document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 	

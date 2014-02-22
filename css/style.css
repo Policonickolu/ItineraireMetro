@@ -1,13 +1,18 @@
 body, html {
   height: 100%;
+  overflow: hidden;
 }
 
 body > input {
 	width: 100%;
+
 }
+
+
 
 #menu {
 	width : 75%;
+	height: 100%;
 	position: fixed;
 	top:0;
 	left:0;
@@ -17,15 +22,44 @@ body > input {
 	transform: translateX(-80%);
 
 	padding : 5% 5% 5% 5%;
+	overflow: hidden;
+
+	-ms-touch-action: none;
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	-o-text-size-adjust: none;
+	text-size-adjust: none;
+	
 }
 
 #menu > div {
 	margin-right: 16%;
-	height: 100%;
-}
+	padding-bottom: 200px;
+	width : 73%;
+	position:relative;
 
-.liste {
-	height : 200px;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-moz-tap-highlight-color: rgba(0,0,0,0);
+
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+
+	-moz-transition: all 1s;
+	-webkit-transition: all 1s;
+	-o-transition: all 1s;
+	-ms-transition: all 1s;
+	transition: all 1s ;
 }
 
 #itineraire tbody {
@@ -77,4 +111,19 @@ body > input {
 	-ms-transform: translateZ(0);
 	-o-transform: translateZ(0);
 	transform: translateZ(0);
+
+	-moz-transition: all 1s;
+	-webkit-transition: all 1s;
+	-o-transition: all 1s;
+	-ms-transition: all 1s;
+	transition: all 1s ;
 }
+
+.ligne{
+	fill:none;
+	stroke-width:10;
+	stroke-opacity:0.5;
+	stroke-dasharray: 10 5 5 10;
+	stroke-dashoffset:20;
+}
+
