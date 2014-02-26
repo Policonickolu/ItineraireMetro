@@ -12,3 +12,4 @@ ItineraireMetro includes:
 * [Dijkstra](https://github.com/andrewhayward/dijkstra)
 * [hammer.js](https://github.com/EightMedia/hammer.js)
 * [Iscroll](https://github.com/cubiq/iscroll)
+* [JQuery.transit](https://github.com/rstacruz/jquery.transit)
