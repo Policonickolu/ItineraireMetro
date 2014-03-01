@@ -2141,7 +2141,7 @@ var planMetro = function(){
 		"bercy/M14" : bercy_m14.voisins,
 		"cour_saint_emilion/M14" : cour_saint_emilion_m14.voisins,
 		"bibliotheque_francois_mitterrand/M14" : bibliotheque_francois_mitterrand_m14.voisins,
-		"olympiades/M14" : olympiades_m14.voisin,
+		"olympiades/M14" : olympiades_m14.voisins,
 	};
 	return function(){
 		return graphe;
