@@ -22,4 +22,4 @@ You just have to scroll or scale the map. The left margin is a menu to swipe whe
 
 ## Compatibility
 
-This web application was designed for Firefox OS, but it can be used on desktop navigator. You can try a version on http://heidyby.online.fr/projets/metro-paris/
+This web application was designed for Firefox OS, but it can be used on desktop navigator. You can try a version on http://heidyby.online.fr/projects/metro-paris/
